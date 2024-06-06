@@ -1,22 +1,32 @@
-import tailwind from "./tailwind.css.txt";
-
 document.getElementById("injectButton").addEventListener("click", () => {
-  // Dapatkan tab aktif
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const tabId = tabs[0].id;
-    // Injeksi CSS langsung ke dalam halaman
-    chrome.scripting.executeScript({
-      target: { tabId: tabId },
-      func: injectTailwindCSS,
-    });
+    // Injeksi file eksternal Tailwind
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tabId },
+        files: ["tailwind.min.js"], // Menginjeksikan file eksternal dari dist
+      },
+      () => {
+        console.log("Tailwind injected");
+        // Injeksi skrip untuk memaksa render ulang
+        chrome.scripting.executeScript(
+          {
+            target: { tabId: tabId },
+            func: forceRepaint,
+          },
+          () => {
+            console.log("Forced repaint");
+            // Menutup popup setelah injeksi selesai
+            window.close();
+          },
+        );
+      },
+    );
   });
 });
 
-function injectTailwindCSS() {
-  if (!document.querySelector("style[data-tailwind]")) {
-    const style = document.createElement("style");
-    style.setAttribute("data-tailwind", "");
-    style.innerHTML = `/* Tailwind CSS content here */${tailwind}`;
-    document.head.appendChild(style);
-  }
+function forceRepaint() {
+  document.documentElement.classList.toggle("force-repaint");
+  document.documentElement.classList.toggle("force-repaint");
 }
