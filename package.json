@@ -1,0 +1,15 @@
+{
+  "name": "tailwind-browser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "popup.js",
+  "scripts": {
+    "build": "esbuild --bundle popup.js --outfile=popup-production.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "esbuild": "^0.21.4"
+  }
+}
