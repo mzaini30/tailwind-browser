@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Inject Tailwind CSS",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Inject Tailwind CSS into the current page",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
